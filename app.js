@@ -98,18 +98,17 @@ router.use((req, res, next) => {
  */
 
 // 애플리케이션에 Mongoose 설정
-const mongoose = require("mongoose"), // mongoose를 요청
-  dbName = "ut-nodejs";
+const mongoose = require("mongoose"); // mongoose를 요청
 
 // 데이터베이스 연결 설정
-mongoose.connect(`mongodb://127.0.0.1:27017/${dbName}`, {
-  useNewUrlParser: true,
-});
-
-// 연결되면 메시지를 보냄
+mongoose.connect(
+  "mongodb+srv://eodnjs9906:srRXWelx7bYeKx8L@ut-node.rkbl8lc.mongodb.net/?retryWrites=true&w=majority&appName=UT-node", // 데이터베이스 연결 설정, // 경로 lesson15
+);
+mongoose.connection;
 const db = mongoose.connection;
+
 db.once("open", () => {
-  console.log(`Connected to ${dbName} MongoDB using Mongoose!`);
+  console.log("Connected to MONGODB!!!");
 });
 
 /**
@@ -194,6 +193,31 @@ router.delete(
  * Look at the User routes above for guidance = 위의 사용자 라우트를 참고
  * =====================================================================
  */
+router.get("/discussions",
+   discussionsController.index,
+    discussionsController.indexView);
+router.get("/discussions/new",
+   discussionsController.new);
+router.post(
+  "/discussions/create",
+  discussionsController.create,
+  discussionsController.redirectView
+);
+router.get("/discussions/:id",
+   discussionsController.show,
+    discussionsController.showView);
+router.get("/discussions/:id/edit",
+   discussionsController.edit); 
+router.put(
+  "/discussions/:id/update",
+  discussionsController.update,
+  discussionsController.redirectView
+); 
+router.delete(
+  "/discussions/:id/delete",
+  discussionsController.delete,
+  discussionsController.redirectView
+);
 // 1. index 라우트 생성 (모든 레코드 보기) = GET /discussions,                index 액션, index 뷰
 // 2. 생성 폼을 보기 위한 요청 처리        = GET /discussions/new,            new 액션
 // 3. 생성 데이터의 처리와 결과            = POST /discussions/create,        create 액션, redirectView 뷰
